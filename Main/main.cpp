@@ -45,6 +45,7 @@ int buscaBinariaNome(lol v[], int inicio, int fim, string nome) {
 
 int main() {
 
+    char res = 's';
     int N = 40;
     int M = N;
     lol *V = new lol[N];
@@ -66,7 +67,13 @@ int main() {
         getline(arquivo, V[i].funcao, ',');
     }
 
+    cout << "Deseja procurar algum personagem?" << endl << "1-ID" << endl << "2-Nome" << endl;
+    int resposta;
+    cin >> resposta;
+
+
     int ID;
+    if(resposta == 1){
     cout << "Digite o ID: ";
     cin >> ID;
 
@@ -80,8 +87,16 @@ int main() {
         cout << "Apelido: " << V[posID].apelido << endl;
         cout << "Rota: " << V[posID].rota << endl;
         cout << "Funcao: " << V[posID].funcao << endl;
+
+        cout << "Deseja deletar esse personagem?" << endl << "S/s" << endl << "N/n" << endl;
+        cin >> res;
+        if(res ==  'S' or res == 's'){
+        V[ID-1].removido = true;
+            }
+        }
     }
 
+    if(resposta == 2){
     string nome; 
     cout << "Digite o nome: ";
     cin.ignore();
@@ -97,9 +112,15 @@ int main() {
         cout << "Apelido: " << V[posNome].apelido << endl;
         cout << "Rota: " << V[posNome].rota << endl;
         cout << "Funcao: " << V[posNome].funcao << endl;
-    }
 
-    char res = 's';
+        cout << "Deseja deletar esse personagem?" << endl << "S/s" << endl << "N/n" << endl  ;
+        cin >> res;
+        if(res ==  'S' or res == 's'){
+            V[ID-1].removido = true;
+            }
+    }
+}
+
     bool continuar = true;
 
     while (continuar) {
@@ -140,12 +161,14 @@ int main() {
     }
 
     for (int i = 0; i < M; i++) {
+        if(V[i].removido == false){
         cout << V[i].identificador << endl;
         cout << V[i].nome << endl;
         cout << V[i].apelido << endl;
         cout << V[i].rota << endl;
         cout << V[i].funcao << endl;
     }
+}
 
     delete[] V;
 
