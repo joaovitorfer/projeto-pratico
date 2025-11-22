@@ -13,6 +13,45 @@ struct lol {
     bool removido = false;
 };
 
+
+void shellSortID(lol v[], int n) {
+    int gap = n / 2;
+
+    while (gap > 0) {
+        for (int i = gap; i < n; i++) {
+            lol temp = v[i];
+            int j = i;
+
+            while (j >= gap && v[j - gap].identificador > temp.identificador) {
+                v[j] = v[j - gap];
+                j -= gap;
+            }
+
+            v[j] = temp;
+        }
+        gap /= 2;
+    }
+}
+
+
+void shellSortNome(lol v[], int n) {
+    int gap = n / 2;
+
+    while (gap > 0) {
+        for (int i = gap; i < n; i++) {
+            lol temp = v[i];
+            int j = i;
+
+            while (j >= gap && v[j - gap].nome > temp.nome) {
+                v[j] = v[j - gap];
+                j -= gap;
+            }
+
+            v[j] = temp;
+        }
+        gap /= 2;
+    }
+}
 int buscaBinariaID(lol v[], int inicio, int fim, int ID) {
     if (inicio > fim)
         return -1;
@@ -67,10 +106,14 @@ int main() {
         getline(arquivo, V[i].funcao, ',');
     }
 
+<<<<<<< Updated upstream
     cout << "Deseja procurar algum personagem?" << endl << "1-ID" << endl << "2-Nome" << endl;
     int resposta;
     cin >> resposta;
 
+=======
+    shellSortID(V, M);
+>>>>>>> Stashed changes
 
     int ID;
     if(resposta == 1){
@@ -96,7 +139,12 @@ int main() {
         }
     }
 
+<<<<<<< Updated upstream
     if(resposta == 2){
+=======
+    shellSortNome(V, M);
+    
+>>>>>>> Stashed changes
     string nome; 
     cout << "Digite o nome: ";
     cin.ignore();
