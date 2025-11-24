@@ -20,13 +20,6 @@ void shellSortID(lol v[], int n) {
     while (gap > 0) {
         for (int i = gap; i < n; i++) {
             lol temp = v[i];
-            int j = i;
-
-            while (j >= gap && v[j - gap].identificador > temp.identificador) {
-                v[j] = v[j - gap];
-                j -= gap;
-            }
-
             v[j] = temp;
         }
         gap /= 2;
@@ -46,7 +39,6 @@ void shellSortNome(lol v[], int n) {
                 v[j] = v[j - gap];
                 j -= gap;
             }
-
             v[j] = temp;
         }
         gap /= 2;
@@ -106,14 +98,11 @@ int main() {
         getline(arquivo, V[i].funcao, ',');
     }
 
-<<<<<<< Updated upstream
     cout << "Deseja procurar algum personagem?" << endl << "1-ID" << endl << "2-Nome" << endl;
     int resposta;
     cin >> resposta;
 
-=======
     shellSortID(V, M);
->>>>>>> Stashed changes
 
     int ID;
     if(resposta == 1){
@@ -139,12 +128,10 @@ int main() {
         }
     }
 
-<<<<<<< Updated upstream
+
     if(resposta == 2){
-=======
     shellSortNome(V, M);
     
->>>>>>> Stashed changes
     string nome; 
     cout << "Digite o nome: ";
     cin.ignore();
@@ -168,7 +155,6 @@ int main() {
             }
     }
 }
-
     bool continuar = true;
 
     while (continuar) {
@@ -177,46 +163,45 @@ int main() {
         cin >> res;
 
         if (res == 's' or res == 'S') {
-
-            M++;
+			if(N == M){
+				M += 5;
 
             lol *novo = new lol[M];
 
-            for (int i = 0; i < M - 1; i++)
+            for (int i = 0; i < N; i++)
                 novo[i] = V[i];
 
             delete[] V;
             V = novo;
+}
+            cin.ignore();// tem como tirar essa quebra de linha aqui não? 
+            V[N].identificador = N+1;
 
-            V[M - 1].identificador = M;
-
-            cin.ignore(1, '\n');
             cout << "nome: ";
-            getline(cin, V[M - 1].nome);
+            getline(cin, V[N].nome);
 
             cout << "apelido: ";
-            getline(cin, V[M - 1].apelido);
+            getline(cin, V[N].apelido);
 
             cout << "rota: ";
-            getline(cin, V[M - 1].rota);
+            getline(cin, V[N].rota);
 
             cout << "funcao: ";
-            getline(cin, V[M - 1].funcao);
+            getline(cin, V[N].funcao);
+            N++;
 
         } else if (res == 'n' or res == 'N') {
             continuar = false;
         }
     }
 
-    for (int i = 0; i < M; i++) {
-        if(V[i].removido == false){
+    for (int i = 0; i < N; i++) {
         cout << V[i].identificador << endl;
         cout << V[i].nome << endl;
         cout << V[i].apelido << endl;
         cout << V[i].rota << endl;
         cout << V[i].funcao << endl;
     }
-}
 
     delete[] V;
 
