@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 using namespace std;
 
 struct lol {
@@ -20,6 +19,12 @@ void shellSortID(lol v[], int n) {
     while (gap > 0) {
         for (int i = gap; i < n; i++) {
             lol temp = v[i];
+            int j = i;
+
+            while (j >= gap && v[j - gap].identificador > temp.identificador) {
+                v[j] = v[j - gap];
+                j -= gap;
+            }
             v[j] = temp;
         }
         gap /= 2;
@@ -73,32 +78,9 @@ int buscaBinariaNome(lol v[], int inicio, int fim, string nome) {
 
     return buscaBinariaNome(v, meio + 1, fim, nome);
 }
-
-int main() {
-
-    char res = 's';
-    int N = 40;
-    int M = N;
-    lol *V = new lol[N];
-
-    ifstream arquivo("personagens.csv");
-
-    if (!arquivo) {
-        cout << "Erro ao abrir o arquivo";
-        return 0;
-    }
-
-    for (int i = 0; i < N; i++) {
-        arquivo >> V[i].identificador;
-        arquivo.ignore(1, ',');
-
-        getline(arquivo, V[i].nome, ',');
-        getline(arquivo, V[i].apelido, ',');
-        getline(arquivo, V[i].rota, ',');
-        getline(arquivo, V[i].funcao, ',');
-    }
-
-    cout << "Deseja procurar algum personagem?" << endl << "1-ID" << endl << "2-Nome" << endl;
+void Procurar(lol V[], int M){
+	char res = 's';
+	    cout << "Escolha como deseja procurar o personagem: " << endl << "1-ID" << endl << "2-Nome" << endl;
     int resposta;
     cin >> resposta;
 
@@ -123,7 +105,7 @@ int main() {
         cout << "Deseja deletar esse personagem?" << endl << "S/s" << endl << "N/n" << endl;
         cin >> res;
         if(res ==  'S' or res == 's'){
-        V[ID-1].removido = true;
+        V[posID].removido = true;
             }
         }
     }
@@ -148,18 +130,22 @@ int main() {
         cout << "Rota: " << V[posNome].rota << endl;
         cout << "Funcao: " << V[posNome].funcao << endl;
 
-        cout << "Deseja deletar esse personagem?" << endl << "S/s" << endl << "N/n" << endl  ;
+        cout << "Deseja deletar esse personagem?" << endl << "S/s" << endl << "N/n" << endl;
         cin >> res;
         if(res ==  'S' or res == 's'){
-            V[ID-1].removido = true;
+            V[posNome].removido = true;
             }
     }
 }
-    bool continuar = true;
+}
+void adicionar(lol *&V, int &M, int &N){
+	   char res = 's';
+	   bool continuar = true;
+	   
 
     while (continuar) {
 
-        cout << "Deseja acrescentar algum personagem? ";
+        cout << "Deseja acrescentar algum personagem? " << endl << "S/s" << endl << "N/n" << endl;
         cin >> res;
 
         if (res == 's' or res == 'S') {
@@ -174,7 +160,7 @@ int main() {
             delete[] V;
             V = novo;
 }
-            cin.ignore();// tem como tirar essa quebra de linha aqui não? 
+            cin.ignore();
             V[N].identificador = N+1;
 
             cout << "nome: ";
@@ -194,14 +180,72 @@ int main() {
             continuar = false;
         }
     }
+ 
+}
+void mostrar(lol V[],int N){
+	 for (int i = 0; i < N; i++) {
+		if(V[i].removido == false){
+        cout << "ID: " << V[i].identificador << endl;
+        cout << "Nome: " << V[i].nome << endl;
+        cout << "Apelido: " << V[i].apelido << endl;
+        cout << "Rotas: " << V[i].rota << endl;
+        cout << "Posto: " << V[i].funcao << endl;
+    
+	}
+    }
+}
+void Menu(lol *&V,int &N, int &M){
+	char R;
+	while(true){
+	cout << endl;
+	cout << "         " << "MENU"<< endl;
+	cout << "O que voce deseja fazer? (digite o numero)" << endl;
+	cout << "1: Adicionar" << endl;
+	cout << "2: Procurar" << endl;
+	cout << "3: mostrar todos os personagens" << endl;
+	cin >> R;
+	switch(R){
+		case '1':
+		adicionar(V,M,N);
+		break;
+		case '2':
+		Procurar(V,N);
+		break;
+		case '3':
+		mostrar(V,N);
+		break;
+	}
+}
+	
+	
+}
+
+int main() {
+
+    int N = 40;
+    lol *V = new lol[N];
+    int M = N;
+
+    ifstream arquivo("personagens.csv");
+
+    if (!arquivo) {
+        cout << "Erro ao abrir o arquivo";
+        return 0;
+    }
 
     for (int i = 0; i < N; i++) {
-        cout << V[i].identificador << endl;
-        cout << V[i].nome << endl;
-        cout << V[i].apelido << endl;
-        cout << V[i].rota << endl;
-        cout << V[i].funcao << endl;
+        arquivo >> V[i].identificador;
+        arquivo.ignore(1, ',');
+
+        getline(arquivo, V[i].nome, ',');
+        getline(arquivo, V[i].apelido, ',');
+        getline(arquivo, V[i].rota, ',');
+        getline(arquivo, V[i].funcao, ',');
     }
+    Menu(V,N,M);
+    
+
+ 
 
     delete[] V;
 
