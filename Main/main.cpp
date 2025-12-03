@@ -13,40 +13,32 @@ struct lol {
 };
 
 
-void shellSortID(lol v[], int n) {
-    int gap = n / 2;
-
-    while (gap > 0) {
-        for (int i = gap; i < n; i++) {
-            lol temp = v[i];
-            int j = i;
-
-            while (j >= gap && v[j - gap].identificador > temp.identificador) {
-                v[j] = v[j - gap];
-                j -= gap;
-            }
-            v[j] = temp;
+	void insertionSortID(lol v[], int n)  {
+    for (int i = 1; i < n; i++) {
+        lol temp = v[i];
+        int j = i - 1;
+//insertion
+        while (j >= 0 && v[j].identificador > temp.identificador) {
+            v[j + 1] = v[j];
+            j--;
         }
-        gap /= 2;
+
+        v[j + 1] = temp;
     }
 }
 
 
-void shellSortNome(lol v[], int n) {
-    int gap = n / 2;
+void insertionSortNome(lol v[], int n) {
+    for (int i = 1; i < n; i++) {
+        lol temp = v[i];
+        int j = i - 1;
 
-    while (gap > 0) {
-        for (int i = gap; i < n; i++) {
-            lol temp = v[i];
-            int j = i;
-
-            while (j >= gap && v[j - gap].nome > temp.nome) {
-                v[j] = v[j - gap];
-                j -= gap;
-            }
-            v[j] = temp;
+        while (j >= 0 && v[j].nome > temp.nome) {
+            v[j + 1] = v[j];
+            j--;
         }
-        gap /= 2;
+
+        v[j + 1] = temp;
     }
 }
 int buscaBinariaID(lol v[], int inicio, int fim, int ID) {
@@ -84,7 +76,7 @@ void Procurar(lol V[], int M){
     int resposta;
     cin >> resposta;
 
-    shellSortID(V, M);
+    insertionSortID(V, M);
 
     int ID;
     if(resposta == 1){
@@ -112,7 +104,7 @@ void Procurar(lol V[], int M){
 
 
     if(resposta == 2){
-    shellSortNome(V, M);
+    insertionSortNome(V, M);
     
     string nome; 
     cout << "Digite o nome: ";
