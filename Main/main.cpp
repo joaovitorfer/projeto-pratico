@@ -12,12 +12,65 @@ struct lol {
     bool removido = false;
 };
 
+void compactar(lol V[], int &N) {
+    int j = 0;
+    for (int i = 0; i < N; i++) {
+        if (!V[i].removido) {
+            V[j] = V[i];
+            j++;
+        }
+    }
+    N = j;
+}
 
-	void insertionSortID(lol v[], int n)  {
+void salvar(const string nomeA,lol V[],int &n){
+	ofstream arquivo(nomeA);
+	
+	  if (!arquivo) {
+        cout << "Erro ao abrir o arquivo para salvar" << endl;
+        return;
+    }
+
+   for (int i = 0; i < n; i++) {
+	   if(V[i].removido == false){
+        arquivo << V[i].identificador << ",";
+        arquivo << V[i].nome << ",";
+        arquivo << V[i].apelido << ",";
+        arquivo << V[i].rota << ",";
+        arquivo << V[i].funcao;
+
+        if (i < n - 1)
+            arquivo << ",";  
+    }
+}
+    compactar(V,n);
+    arquivo.close();
+}
+void mostrarAlguns(lol V[],int n){
+	int p1 = 0,p2 = 0;
+	cout << "digite a primeira posicao que voce quer exibir"<< endl;
+	while(p1 <=0){
+	cin >> p1;
+}
+    p1 -= 1;
+    cout << "digite a ultima posicao que voce quer exibir"<< endl;
+    while(p2 > n || p2<=0 || p1 >=p2){
+	cin >> p2;
+	}
+	 for (int i = p1; i < p2; i++) {
+		if(V[i].removido == false){
+        cout << "ID: " << V[i].identificador << endl;
+        cout << "Nome: " << V[i].nome << endl;
+        cout << "Apelido: " << V[i].apelido << endl;
+        cout << "Rotas: " << V[i].rota << endl;
+        cout << "Posto: " << V[i].funcao << endl;
+}
+}
+}
+void insertionSortID(lol v[], int n)  {
     for (int i = 1; i < n; i++) {
         lol temp = v[i];
         int j = i - 1;
-//insertion
         while (j >= 0 && v[j].identificador > temp.identificador) {
             v[j + 1] = v[j];
             j--;
@@ -194,7 +247,10 @@ void Menu(lol *&V,int &N, int &M){
 	cout << "O que voce deseja fazer? (digite o numero)" << endl;
 	cout << "1: Adicionar" << endl;
 	cout << "2: Procurar" << endl;
-	cout << "3: mostrar todos os personagens" << endl;
+	cout << "3: Selecionar personagens para exibir" << endl;
+	cout << "4: Exibir todos" << endl;
+	cout << "5: Salvar" << endl;
+	cout << "6: Sair" << endl;
 	cin >> R;
 	switch(R){
 		case '1':
@@ -204,8 +260,18 @@ void Menu(lol *&V,int &N, int &M){
 		Procurar(V,N);
 		break;
 		case '3':
+		mostrarAlguns(V,N);
+		break;
+		case '4':
 		mostrar(V,N);
 		break;
+		case '5':
+		salvar("personagens.csv",V,N);
+		break;
+		case '6':
+		return;
+		break;
+		
 	}
 }
 	
@@ -217,23 +283,40 @@ int main() {
     int N = 40;
     lol *V = new lol[N];
     int M = N;
-
+    N = 0;
     ifstream arquivo("personagens.csv");
 
     if (!arquivo) {
         cout << "Erro ao abrir o arquivo";
         return 0;
     }
+    bool continuar = true;
+    while (continuar) {
 
-    for (int i = 0; i < N; i++) {
-        arquivo >> V[i].identificador;
-        arquivo.ignore(1, ',');
+    if (!(arquivo >> V[N].identificador)){
+        continuar = false;
+	}
+        if(continuar){
+    arquivo.ignore();
 
-        getline(arquivo, V[i].nome, ',');
-        getline(arquivo, V[i].apelido, ',');
-        getline(arquivo, V[i].rota, ',');
-        getline(arquivo, V[i].funcao, ',');
+    getline(arquivo, V[N].nome, ',');
+    getline(arquivo, V[N].apelido, ',');
+    getline(arquivo, V[N].rota, ',');
+    getline(arquivo, V[N].funcao, ',');
+
+    N++;
+
+  
+    if (N == M) {
+        M += 5;
+        lol *novo = new lol[M];
+        for (int i = 0; i < N; i++)
+            novo[i] = V[i];
+        delete[] V;
+        V = novo;
     }
+}
+}
     Menu(V,N,M);
     
 
