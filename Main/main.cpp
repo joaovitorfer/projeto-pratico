@@ -33,14 +33,12 @@ void salvar(const string nomeA,lol V[],int &n){
 
    for (int i = 0; i < n; i++) {
 	   if(V[i].removido == false){
-        arquivo << V[i].identificador << ",";
-        arquivo << V[i].nome << ",";
-        arquivo << V[i].apelido << ",";
-        arquivo << V[i].rota << ",";
-        arquivo << V[i].funcao;
-
-        if (i < n - 1)
-            arquivo << ",";  
+        arquivo << V[i].identificador << "\n";
+        arquivo << V[i].nome << "\n";
+        arquivo << V[i].apelido << "\n";
+        arquivo << V[i].rota << "\n";
+        arquivo << V[i].funcao << "\n";
+        arquivo << "\n";  
     }
 }
     compactar(V,n);
@@ -234,7 +232,7 @@ void mostrar(lol V[],int N){
         cout << "Nome: " << V[i].nome << endl;
         cout << "Apelido: " << V[i].apelido << endl;
         cout << "Rotas: " << V[i].rota << endl;
-        cout << "Posto: " << V[i].funcao << endl;
+        cout << "Funcao: " << V[i].funcao << endl;
     
 	}
     }
@@ -299,13 +297,14 @@ int main() {
         if(continuar){
     arquivo.ignore();
 
-    getline(arquivo, V[N].nome, ',');
-    getline(arquivo, V[N].apelido, ',');
-    getline(arquivo, V[N].rota, ',');
-    getline(arquivo, V[N].funcao, ',');
-
-    N++;
-
+        getline(arquivo, V[N].nome);
+        getline(arquivo, V[N].apelido);
+        getline(arquivo, V[N].rota);
+        getline(arquivo, V[N].funcao);
+        
+        string lixo;
+        getline(arquivo, lixo);
+        N++;
   
     if (N == M) {
         M += 5;
