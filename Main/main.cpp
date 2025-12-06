@@ -23,27 +23,28 @@ void compactar(lol V[], int &N) {
     N = j;
 }
 
-void salvar(const string nomeA,lol V[],int &n){
-	ofstream arquivo(nomeA);
-	
-	  if (!arquivo) {
-        cout << "Erro ao abrir o arquivo para salvar" << endl;
-        return;
+void salvar(const string nomeA, lol V[], int &n) {
+    ofstream arquivo(nomeA);
+
+    if (!arquivo) {
+        cout << "Erro ao abrir o arquivo para Salvar!!" << endl;
+    }else{
+    compactar(V, n);
+    for (int i = 0; i < n; i++) {
+        if (!V[i].removido) {
+
+            arquivo << V[i].identificador << ";"
+                    << V[i].nome << ";"
+                    << V[i].apelido << ";"
+                    << V[i].rota << ";"
+                    << V[i].funcao << "\n";
+        }
     }
 
-   for (int i = 0; i < n; i++) {
-	   if(V[i].removido == false){
-        arquivo << V[i].identificador << "\n";
-        arquivo << V[i].nome << "\n";
-        arquivo << V[i].apelido << "\n";
-        arquivo << V[i].rota << "\n";
-        arquivo << V[i].funcao << "\n";
-        arquivo << "\n";  
-    }
 }
-    compactar(V,n);
     arquivo.close();
 }
+
 void mostrarAlguns(lol V[],int n){
 	int p1 = 0,p2 = 0;
 	cout << "digite a primeira posicao que voce quer exibir"<< endl;
@@ -85,6 +86,45 @@ void insertionSortNome(lol v[], int n) {
         int j = i - 1;
 
         while (j >= 0 && v[j].nome > temp.nome) {
+            v[j + 1] = v[j];
+            j--;
+        }
+
+        v[j + 1] = temp;
+    }
+}
+void insertionSortApelido(lol v[], int n) {
+    for (int i = 1; i < n; i++) {
+        lol temp = v[i];
+        int j = i - 1;
+
+        while (j >= 0 && v[j].apelido > temp.apelido) {
+            v[j + 1] = v[j];
+            j--;
+        }
+
+        v[j + 1] = temp;
+    }
+}
+void insertionSortRota(lol v[], int n) {
+    for (int i = 1; i < n; i++) {
+        lol temp = v[i];
+        int j = i - 1;
+
+        while (j >= 0 && v[j].rota > temp.rota) {
+            v[j + 1] = v[j];
+            j--;
+        }
+
+        v[j + 1] = temp;
+    }
+}
+void insertionSortFuncao(lol v[], int n) {
+    for (int i = 1; i < n; i++) {
+        lol temp = v[i];
+        int j = i - 1;
+
+        while (j >= 0 && v[j].funcao > temp.funcao) {
             v[j + 1] = v[j];
             j--;
         }
@@ -181,7 +221,7 @@ void Procurar(lol V[], int M){
     }
 }
 }
-void adicionar(lol *&V, int &M, int &N){
+void adicionar(lol *&V, int &M, int &N,int &D){
 	   char res = 's';
 	   bool continuar = true;
 	   
@@ -204,7 +244,8 @@ void adicionar(lol *&V, int &M, int &N){
             V = novo;
 }
             cin.ignore();
-            V[N].identificador = N+1;
+            D++;
+            V[N].identificador = D;
 
             cout << "nome: ";
             getline(cin, V[N].nome);
@@ -237,7 +278,38 @@ void mostrar(lol V[],int N){
 	}
     }
 }
-void Menu(lol *&V,int &N, int &M){
+void Ordenar(lol V[],int N){
+	cout << "escolha como voce deseja ordenar" << endl;
+	cout << "1: ID" << endl;
+	cout << "2: Nome" << endl;
+	cout << "3: Apelido" << endl;
+	cout << "4: Rota" << endl;
+	cout << "5: funcao" << endl;
+	
+	char R;
+	cin >> R;
+	switch(R){
+		case '1':
+		insertionSortID(V,N);
+		break;
+		case '2':
+		insertionSortNome(V,N);
+		break;
+		case '3':
+	    insertionSortApelido(V,N);
+		break;
+		case '4':
+		insertionSortRota(V,N);
+		break;
+		case '5':
+		insertionSortFuncao(V,N);
+		break;
+		
+	}
+	
+	
+}
+void Menu(lol *&V,int &N, int &M, int &D){
 	char R;
 	while(true){
 	cout << endl;
@@ -245,28 +317,32 @@ void Menu(lol *&V,int &N, int &M){
 	cout << "O que voce deseja fazer? (digite o numero)" << endl;
 	cout << "1: Adicionar" << endl;
 	cout << "2: Procurar" << endl;
-	cout << "3: Selecionar personagens para exibir" << endl;
-	cout << "4: Exibir todos" << endl;
-	cout << "5: Salvar" << endl;
-	cout << "6: Sair" << endl;
+	cout << "3: Ordenar" << endl;
+	cout << "4: Selecionar personagens para exibir" << endl;
+	cout << "5: Exibir todos" << endl;
+	cout << "6: Salvar" << endl;
+	cout << "7: Sair" << endl;
 	cin >> R;
 	switch(R){
 		case '1':
-		adicionar(V,M,N);
+		adicionar(V,M,N,D);
 		break;
 		case '2':
 		Procurar(V,N);
 		break;
 		case '3':
-		mostrarAlguns(V,N);
+		Ordenar(V,N);
 		break;
 		case '4':
-		mostrar(V,N);
+		mostrarAlguns(V,N);
 		break;
 		case '5':
-		salvar("personagens.csv",V,N);
+		mostrar(V,N);
 		break;
 		case '6':
+		salvar("personagens.csv",V,N);
+		break;
+		case '7':
 		return;
 		break;
 		
@@ -282,6 +358,7 @@ int main() {
     lol *V = new lol[N];
     int M = N;
     N = 0;
+    int D = 0;
     ifstream arquivo("personagens.csv");
 
     if (!arquivo) {
@@ -290,20 +367,16 @@ int main() {
     }
     bool continuar = true;
     while (continuar) {
-
     if (!(arquivo >> V[N].identificador)){
         continuar = false;
 	}
         if(continuar){
-    arquivo.ignore();
+        arquivo.ignore();
 
-        getline(arquivo, V[N].nome);
-        getline(arquivo, V[N].apelido);
-        getline(arquivo, V[N].rota);
+        getline(arquivo, V[N].nome, ';');
+        getline(arquivo, V[N].apelido, ';');
+        getline(arquivo, V[N].rota, ';');
         getline(arquivo, V[N].funcao);
-        
-        string lixo;
-        getline(arquivo, lixo);
         N++;
   
     if (N == M) {
@@ -316,7 +389,12 @@ int main() {
     }
 }
 }
-    Menu(V,N,M);
+
+   for (int i = 0; i < N; i++) {
+    if (V[i].identificador > D)
+        D = V[i].identificador;
+   }
+    Menu(V,N,M,D);
     
 
  
