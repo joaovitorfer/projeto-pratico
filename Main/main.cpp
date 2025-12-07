@@ -1,3 +1,8 @@
+/* Grupo: João Pedro Goulart de Faria-22A
+          Laiz Reis de Jesus-22A
+          João Vitor Ferreira dos Santos-22A
+    Tema: Personagens de League of Legends*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
